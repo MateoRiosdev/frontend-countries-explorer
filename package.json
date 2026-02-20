@@ -3,13 +3,8 @@
   "private": true,
   "version": "0.0.1",
   "type": "module",
-  "engines": {
-    "node": "24.x"
-  },
   "scripts": {
-    "dev": "vite",
-    "build": "npx vite build",
-    "preview": "vite preview"
+    "build": "vite build"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.62.7",
