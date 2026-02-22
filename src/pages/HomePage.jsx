@@ -1,86 +1,63 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useCountries } from '../hooks/useCountries'
 import CountryCard from '../components/CountryCard'
 import CountrySkeleton from '../components/CountrySkeleton'
 import SearchBar from '../components/SearchBar'
 
-const REGIONS = ['Todos', 'Africa', 'América', 'Asia', 'Europe', 'Oceanía', 'Antártida']
+const REGIONS = ['Todos', 'Africa', 'Americas', 'Asia', 'Europe', 'Oceania', 'Antarctic']
 
 export default function HomePage() {
   const [search, setSearch] = useState('')
   const [activeRegion, setActiveRegion] = useState('Todos')
+  const [currentPage, setCurrentPage] = useState(1)
+
+  const countriesPerPage = 25
 
   const { data: countries, isLoading, isError, error } = useCountries()
 
+  // 🔎 FILTRADO
   const filtered = useMemo(() => {
     if (!countries) return []
+
     return countries.filter((c) => {
       const matchesSearch =
         c.name.common.toLowerCase().includes(search.toLowerCase()) ||
         c.name.official.toLowerCase().includes(search.toLowerCase()) ||
         c.capital?.[0]?.toLowerCase().includes(search.toLowerCase())
 
-      const matchesRegion = activeRegion === 'Todos' || c.region === activeRegion
+      const matchesRegion =
+        activeRegion === 'Todos' || c.region === activeRegion
 
       return matchesSearch && matchesRegion
     })
   }, [countries, search, activeRegion])
 
+  // 📄 PAGINACIÓN
+  const totalPages = Math.ceil(filtered.length / countriesPerPage)
+
+  const indexOfLast = currentPage * countriesPerPage
+  const indexOfFirst = indexOfLast - countriesPerPage
+
+  const currentCountries = filtered.slice(indexOfFirst, indexOfLast)
+
+  // 🔁 Resetear página cuando cambie búsqueda o región
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [search, activeRegion])
+
+  // 🔒 Seguridad: evitar página fuera de rango
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1)
+    }
+  }, [currentPage, totalPages])
+
   return (
     <div className="min-h-screen">
-      {/* Header  */}
-      <header className="relative overflow-hidden border-b border-[rgba(212,168,67,0.15)]">
-        {/* Fondo */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-[rgba(255, 255, 254, 0.04)] rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-1/3 w-64 h-64 bg-[rgba(14,30,80,0.8)] rounded-full blur-2xl" />
-          {/* Cuadricula */}
-          <svg className="absolute inset-0 w-full h-full opacity-5" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#d4a843" strokeWidth="0.5"/>
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#grid)" />
-          </svg>
-        </div>
-
-        <div className="relative max-w-7xl mx-auto px-6 py-14 sm:py-20">
-          {/* Eyebrow */}
-          <div className="flex items-center gap-2 mb-4">
-            <div className="h-px w-8 bg-[#d4a843]" />
-            <span className="text-[#d4a843] text-xs font-body font-medium tracking-widest uppercase">
-              REST Countries API
-            </span>
-          </div>
-        
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
-            Explorador de 
-            <span className="block mt-2 text-[#d4a843]">
-              Países
-            </span>
-          </h1>
-
-
-          <p className="mt-4 text-slate-400 font-body font-light text-lg max-w-xl leading-relaxed">
-            Descubre cada nación del mundo — ordenadas alfabéticamente, con búsqueda
-            en tiempo real y presentadas de forma elegante.
-          </p>
-
-          {/* Estadísticas */}
-          {countries && (
-            <div className="flex gap-8 mt-8">
-              <Stat value={countries.length} label="Países" />
-              <Stat value={REGIONS.length - 1} label="Regiones" />
-            </div>
-          )}
-        </div>
-      </header>
-
-      {/* Contenido principal */}
+      {/* CONTENIDO PRINCIPAL */}
       <main className="max-w-7xl mx-auto px-6 py-10">
 
-        {/* Regiones */}
+        {/* REGIONES */}
         <div className="flex flex-wrap gap-2 mb-6">
           {REGIONS.map((region) => (
             <button
@@ -97,7 +74,7 @@ export default function HomePage() {
           ))}
         </div>
 
-        {/* Barra de búsqueda */}
+        {/* SEARCH */}
         <div className="mb-8">
           <SearchBar
             value={search}
@@ -107,29 +84,60 @@ export default function HomePage() {
           />
         </div>
 
-        {/* Error */}
+        {/* ERROR */}
         {isError && (
-          <div className="flex flex-col items-center justify-center py-24 text-center">
-            <div className="w-16 h-16 bg-red-900/30 rounded-full flex items-center justify-center mb-4">
-              <svg className="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-                  d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-              </svg>
-            </div>
-            <p className="text-red-400 font-display text-xl mb-2">Algo salió mal</p>
-            <p className="text-slate-500 font-body text-sm">{error?.message}</p>
+          <div className="text-center py-20 text-red-400">
+            {error?.message}
           </div>
         )}
 
-        {/* Red */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        {/* GRID 5 COLUMNAS */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           {isLoading
-            ? Array.from({ length: 12 }).map((_, i) => <CountrySkeleton key={i} />)
-            : filtered.map((country) => (
+            ? Array.from({ length: 25 }).map((_, i) => (
+                <CountrySkeleton key={i} />
+              ))
+            : currentCountries.map((country) => (
                 <CountryCard key={country.cca3} country={country} />
               ))
           }
         </div>
+
+    {/* PAGINACIÓN */}
+    <div className="flex justify-center items-center gap-2 mt-10 flex-wrap">
+      <button
+        disabled={currentPage === 1}
+        onClick={() => setCurrentPage(prev => prev - 1)}
+        className="px-3 py-2 border rounded disabled:opacity-30"
+      >
+        ←
+      </button>
+
+      {Array.from({ length: totalPages }, (_, i) => (
+        <button
+          key={i}
+          onClick={() => {
+            setCurrentPage(i + 1)
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+          }}
+          className={`px-4 py-2 rounded-lg text-sm font-medium border transition
+            ${currentPage === i + 1
+              ? 'bg-[#d4a843] border-[#d4a843] text-[#04080f]'
+              : 'border-[rgba(212,168,67,0.25)] text-slate-400 hover:border-[#d4a843]'
+            }`}
+        >
+          {i + 1}
+        </button>
+      ))}
+
+      <button
+        disabled={currentPage === totalPages}
+        onClick={() => setCurrentPage(prev => prev + 1)}
+        className="px-3 py-2 border rounded disabled:opacity-30"
+      >
+        →
+      </button>
+    </div>
 
         {/* Estado vacío */}
         {!isLoading && !isError && filtered.length === 0 && (
