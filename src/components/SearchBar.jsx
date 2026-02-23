@@ -41,7 +41,7 @@ export default function SearchBar({ value, onChange, currentPage, totalPages, pa
 
       {/* Info de página */}
       {filteredCount !== undefined && totalPages !== undefined && (
-        <p className="text-xs text-slate-500 font-body mt-1 sm:mt-0">
+        <p className="text-sm text-slate-500 font-body mt-1 sm:mt-0">
           Página <span className="text-slate-300 font-medium">{currentPage}</span> de{' '}
           <span className="text-[#d4a843] font-semibold">{totalPages}</span> · mostrando{' '}
           <span className="text-slate-300 font-medium">{paginatedCount}</span> de{' '}

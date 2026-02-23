@@ -110,17 +110,6 @@ export default function HomePage() {
         />
         </div>
 
-        {/* Info de página */}
-        {!isLoading && !isError && filtered.length > 0 && (
-          <p className="text-xs text-slate-500 font-body mb-4">
-            Página <span className="text-slate-300 font-medium">{currentPage}</span> de{' '}
-            <span className="text-[#d4a843] font-semibold">{totalPages}</span>
-            {' · '}mostrando{' '}
-            <span className="text-slate-300 font-medium">{paginated.length}</span> de{' '}
-            <span className="text-[#d4a843] font-semibold">{filtered.length}</span> países
-          </p>
-        )}
-
         {/* Estado de error */}
         {isError && (
           <div className="flex flex-col items-center justify-center py-24 text-center">
