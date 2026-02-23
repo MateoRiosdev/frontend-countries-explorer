@@ -91,25 +91,25 @@ Incluye todo lo del Nivel 1 + nuevas funcionalidades interactivas:
 ```
 src/
 ├── components/
-│   ├── CountryCard.jsx
-│   ├── CountrySkeleton.jsx
-│   ├── SearchBar.jsx
-│   ├── Pagination.jsx
-│   ├── PostForm.jsx
-│   ├── Header.jsx
-│   ├── ErrorState.jsx
-│   └── EmptyState.jsx
+│   ├── CountryCard.jsx      <- Renderiza la card individual de cada país
+│   ├── CountrySkeleton.jsx  <- Skeleton loader mientras cargan los datos
+│   ├── SearchBar.jsx        <- Búsqueda, filtro por región y orden alfabético
+│   ├── Pagination.jsx       <- Paginación de la lista de países
+│   ├── PostForm.jsx         <- Formulario para crear un nuevo post
+│   ├── Header.jsx           <- Encabezado principal de la aplicación
+│   ├── ErrorState.jsx       <- UI mostrada cuando ocurre un error en el fetch
+│   └── EmptyState.jsx       <- Estado vacío cuando no hay resultados
 ├── hooks/
-│   └── useCountries.js
+│   └── useCountries.js      <- Hook con lógica de fetch, caché, filtros y orden
 ├── pages/
-│   ├── HomePage.jsx
-│   ├── CountryDetailPage.jsx
-│   └── CreatePostPage.jsx
+│   ├── HomePage.jsx         <- Página principal que compone la vista
+│   ├── CountryDetailPage.jsx<- Página de detalle de un país
+│   └── CreatePostPage.jsx   <- Página para crear un nuevo post
 ├── routes/
-│   └── AppRouter.jsx
-├── App.jsx
-├── main.jsx
-└── index.css
+│   └── AppRouter.jsx        <- Define rutas y navegación con React Router
+├── App.jsx                  <- Componente raíz de la aplicación
+├── main.jsx                 <- Punto de entrada que monta React en el DOM
+└── index.css                <- Estilos globales y configuración de Tailwind
 ```
 
 ---
