@@ -32,29 +32,33 @@ export default function HomePage() {
     })
   }, [countries, search, activeRegion])
 
-  // 📄 PAGINACIÓN
-  const totalPages = Math.ceil(filtered.length / countriesPerPage)
-
-  const indexOfLast = currentPage * countriesPerPage
-  const indexOfFirst = indexOfLast - countriesPerPage
-
-  const currentCountries = filtered.slice(indexOfFirst, indexOfLast)
-
   // 🔁 Resetear página cuando cambie búsqueda o región
   useEffect(() => {
     setCurrentPage(1)
   }, [search, activeRegion])
 
-  // 🔒 Seguridad: evitar página fuera de rango
-  useEffect(() => {
-    if (currentPage > totalPages) {
-      setCurrentPage(1)
-    }
-  }, [currentPage, totalPages])
+  // 📄 PAGINACIÓN
+  const totalPages = Math.ceil(filtered.length / countriesPerPage)
+  const indexOfLast = currentPage * countriesPerPage
+  const indexOfFirst = indexOfLast - countriesPerPage
+  const currentCountries = filtered.slice(indexOfFirst, indexOfLast)
 
   return (
     <div className="min-h-screen">
-      {/* CONTENIDO PRINCIPAL */}
+      
+      {/* HEADER */}
+      <header className="relative overflow-hidden border-b border-[rgba(212,168,67,0.15)]">
+        <div className="relative max-w-7xl mx-auto px-6 py-14 sm:py-20">
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
+            Explorador de
+            <span className="block mt-2 text-[#d4a843]">Países</span>
+          </h1>
+          <p className="mt-4 text-slate-400 font-body font-light text-lg max-w-xl">
+            Descubre cada nación del mundo con búsqueda en tiempo real.
+          </p>
+        </div>
+      </header>
+
       <main className="max-w-7xl mx-auto px-6 py-10">
 
         {/* REGIONES */}
@@ -63,11 +67,11 @@ export default function HomePage() {
             <button
               key={region}
               onClick={() => setActiveRegion(region)}
-              className={`px-4 py-1.5 rounded-full text-sm font-body font-medium border transition-all duration-200
-                ${activeRegion === region
-                  ? 'bg-[#d4a843] border-[#d4a843] text-[#04080f]'
-                  : 'bg-transparent border-[rgba(212,168,67,0.25)] text-slate-400 hover:border-[#d4a843] hover:text-[#d4a843]'
-                }`}
+              className={`px-4 py-1.5 rounded-full text-sm font-body font-medium border transition
+              ${activeRegion === region
+                ? 'bg-[#d4a843] border-[#d4a843] text-[#04080f]'
+                : 'border-[rgba(212,168,67,0.25)] text-slate-400 hover:border-[#d4a843]'
+              }`}
             >
               {region}
             </button>
@@ -75,24 +79,15 @@ export default function HomePage() {
         </div>
 
         {/* SEARCH */}
-        <div className="mb-8">
-          <SearchBar
-            value={search}
-            onChange={setSearch}
-            totalCount={countries?.length ?? 0}
-            filteredCount={filtered.length}
-          />
-        </div>
+        <SearchBar
+          value={search}
+          onChange={setSearch}
+          totalCount={countries?.length ?? 0}
+          filteredCount={filtered.length}
+        />
 
-        {/* ERROR */}
-        {isError && (
-          <div className="text-center py-20 text-red-400">
-            {error?.message}
-          </div>
-        )}
-
-        {/* GRID 5 COLUMNAS */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+        {/* GRID */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-8">
           {isLoading
             ? Array.from({ length: 25 }).map((_, i) => (
                 <CountrySkeleton key={i} />
@@ -103,41 +98,27 @@ export default function HomePage() {
           }
         </div>
 
-    {/* PAGINACIÓN */}
-    <div className="flex justify-center items-center gap-2 mt-10 flex-wrap">
-      <button
-        disabled={currentPage === 1}
-        onClick={() => setCurrentPage(prev => prev - 1)}
-        className="px-3 py-2 border rounded disabled:opacity-30"
-      >
-        ←
-      </button>
-
-      {Array.from({ length: totalPages }, (_, i) => (
-        <button
-          key={i}
-          onClick={() => {
-            setCurrentPage(i + 1)
-            window.scrollTo({ top: 0, behavior: 'smooth' })
-          }}
-          className={`px-4 py-2 rounded-lg text-sm font-medium border transition
-            ${currentPage === i + 1
-              ? 'bg-[#d4a843] border-[#d4a843] text-[#04080f]'
-              : 'border-[rgba(212,168,67,0.25)] text-slate-400 hover:border-[#d4a843]'
-            }`}
-        >
-          {i + 1}
-        </button>
-      ))}
-
-      <button
-        disabled={currentPage === totalPages}
-        onClick={() => setCurrentPage(prev => prev + 1)}
-        className="px-3 py-2 border rounded disabled:opacity-30"
-      >
-        →
-      </button>
-    </div>
+        {/* PAGINACIÓN */}
+        {!isLoading && totalPages > 1 && (
+          <div className="flex justify-center gap-2 mt-10 flex-wrap">
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i}
+                onClick={() => {
+                  setCurrentPage(i + 1)
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                }}
+                className={`px-4 py-2 rounded-lg text-sm font-medium border
+                ${currentPage === i + 1
+                  ? 'bg-[#d4a843] border-[#d4a843] text-[#04080f]'
+                  : 'border-[rgba(212,168,67,0.25)] text-slate-400 hover:border-[#d4a843]'
+                }`}
+              >
+                {i + 1}
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* Estado vacío */}
         {!isLoading && !isError && filtered.length === 0 && (
