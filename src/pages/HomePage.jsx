@@ -3,6 +3,7 @@ import { useCountries } from '../hooks/useCountries'
 import CountryCard from '../components/CountryCard'
 import CountrySkeleton from '../components/CountrySkeleton'
 import SearchBar from '../components/SearchBar'
+import ScrollToTopButton from '../components/ScrollToTopButton'
 
 const REGIONS = ['Todos', 'Africa', 'Americas', 'Asia', 'Europe', 'Oceania', 'Antarctic']
 
