@@ -179,13 +179,6 @@ export default function CountryDetailPage() {
           </div>
         )}
 
-        {/* Separador y comentarios */}
-        <div className="flex items-center gap-4">
-          <div className="flex-1 h-px bg-[rgba(212,168,67,0.1)]" />
-          <span className="text-slate-600 text-xs font-body uppercase tracking-widest">Comentarios</span>
-          <div className="flex-1 h-px bg-[rgba(212,168,67,0.1)]" />
-        </div>
-
         <CommentsSection countryCode={code} countryName={name.common} />
 
       </main>

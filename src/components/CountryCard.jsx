@@ -18,7 +18,7 @@ export default function CountryCard({ country }) {
   return (
     <Link
       to={`/country/${cca3}`}
-      className="card-hover bg-[#0a1628] border gold-border border rounded-2xl overflow-hidden cursor-pointer group block"
+      className="card-hover bg-[#0a1628] border gold-border rounded-2xl overflow-hidden cursor-pointer group block"
     >
       {/* Flag */}
       <div className="relative h-44 overflow-hidden bg-[#0f2044]">
