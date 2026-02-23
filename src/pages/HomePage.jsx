@@ -83,8 +83,8 @@ export default function HomePage() {
         <SearchBar
           value={search}
           onChange={setSearch}
-          totalCount={countries?.length ?? 0}
-          filteredCount={filtered.length}
+          totalCount={filtered.length}
+          filteredCount={currentCountries.length}
         />
 
         {/* GRID */}

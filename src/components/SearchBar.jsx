@@ -41,6 +41,7 @@ export default function SearchBar({ value, onChange, totalCount, filteredCount }
 
       {/* Resultados de búsqueda */}
       <p className="text-sm font-body text-slate-500 whitespace-nowrap">
+        Mostrando{' '}
         <span className="text-[#d4a843] font-medium">{filteredCount}</span>
         {' '}de{' '}
         <span className="text-slate-400">{totalCount}</span>
