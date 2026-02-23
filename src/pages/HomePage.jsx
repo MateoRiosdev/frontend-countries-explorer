@@ -173,6 +173,8 @@ export default function HomePage() {
           ) - Todos los derechos reservados
         </p>
       </footer>
+
+      <ScrollToTopButton />
     </div>
   )
 }
