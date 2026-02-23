@@ -50,9 +50,7 @@ La app estará en `http://localhost:5173`
 - ✅ Contador de resultados filtrados
 - ✅ Estado de error con opción de reintentar
 - ✅ Estado vacío cuando no hay coincidencias
-- ✅ Diseño responsive (1 → 2 → 3 → 4 columnas)
-- ✅ Animaciones de entrada en las cards con stagger
-
+- ✅ Diseño responsive (1 → 2 → 3 → 4 → 5 columnas)
 ---
 
 ## 📁 Estructura del proyecto
@@ -60,19 +58,19 @@ La app estará en `http://localhost:5173`
 ```
 src/
 ├── components/
-│   ├── CountryCard.jsx     # Card de cada país
-│   ├── CountrySkeleton.jsx # Skeleton loader
-│   ├── SearchBar.jsx       # Búsqueda + filtros + sort
-│   ├── Header.jsx          # Encabezado
-│   ├── ErrorState.jsx      # Estado de error
-│   └── EmptyState.jsx      # Sin resultados
+│   ├── CountryCard.jsx     <- Componente de cada país
+│   ├── CountrySkeleton.jsx <- Recurso visual mientras cargan datos
+│   ├── SearchBar.jsx       <- Barra de búsqueda + filtros + sort
+│   ├── Header.jsx          <- Encabezado de la app
+│   ├── ErrorState.jsx      <- Mensaje en caso de error
+│   └── EmptyState.jsx      <- Cuando no hay resultados
 ├── hooks/
-│   └── useCountries.js     # Hook con lógica de fetch, filtrado y orden
+│   └── useCountries.js     <- Lógica de fetch y filtrado
 ├── pages/
-│   └── HomePage.jsx        # Página principal
-├── App.jsx
-├── main.jsx
-└── index.css
+│   └── HomePage.jsx        <- Vista principal
+├── App.jsx                 <- Componente raíz
+├── main.jsx                <- Punto de entrada
+└── index.css               <- Estilos globales
 ```
 
 ---
