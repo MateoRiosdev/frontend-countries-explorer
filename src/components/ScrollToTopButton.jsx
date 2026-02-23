@@ -1,26 +1,35 @@
-import { useEffect, useState } from "react"
+import { useState, useEffect } from "react"
 
 export default function ScrollToTopButton() {
-  const [visible, setVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
-    const handleScroll = () => {
-      setVisible(window.scrollY > 200)
+    const toggleVisibility = () => {
+      if (window.scrollY > 300) {
+        setIsVisible(true)
+      } else {
+        setIsVisible(false)
+      }
     }
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
+    window.addEventListener("scroll", toggleVisibility)
+
+    return () => window.removeEventListener("scroll", toggleVisibility)
   }, [])
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    })
+  }
+
+  if (!isVisible) return null
 
   return (
     <button
-      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className={`fixed bottom-6 right-6 z-50
-      w-12 h-12 rounded-full
-      bg-[#d4a843] text-[#04080f]
-      shadow-lg transition-all duration-300
-      hover:scale-110
-      ${visible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+      onClick={scrollToTop}
+      className="fixed bottom-6 right-6 bg-[#d4a843] text-[#04080f] p-3 rounded-full shadow-lg hover:scale-110 transition-transform duration-300 z-50"
     >
       ↑
     </button>
