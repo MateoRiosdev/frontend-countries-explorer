@@ -1,9 +1,9 @@
-export default function SearchBar({ value, onChange, totalCount, filteredCount }) {
+export default function SearchBar({ value, onChange, currentPage, totalPages, paginatedCount, filteredCount }) {
   return (
-    <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-      {/* Search Input */}
+    <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 items-start sm:items-center justify-between w-full">
+      
+      {/* Input de búsqueda */}
       <div className="relative w-full sm:w-96">
-        {/* Search icon */}
         <svg
           className="absolute left-4 top-1/2 -translate-y-1/2 text-[#d4a843] w-4 h-4 pointer-events-none"
           fill="none"
@@ -25,7 +25,7 @@ export default function SearchBar({ value, onChange, totalCount, filteredCount }
                      transition-all duration-200"
         />
 
-        {/* Clear button */}
+        {/* Botón para limpiar */}
         {value && (
           <button
             onClick={() => onChange('')}
@@ -39,17 +39,15 @@ export default function SearchBar({ value, onChange, totalCount, filteredCount }
         )}
       </div>
 
-                {/* Info de página */}
-        {!isLoading && !isError && filtered.length > 0 && (
-          <p className="text-xs text-slate-500 font-body mb-4">
-            Página <span className="text-slate-300 font-medium">{currentPage}</span> de{' '}
-            <span className="text-[#d4a843] font-semibold">{totalPages}</span>
-            {' · '}mostrando{' '}
-            <span className="text-slate-300 font-medium">{paginated.length}</span> de{' '}
-            <span className="text-[#d4a843] font-semibold">{filtered.length}</span> países
-          </p>
-        )}
-
+      {/* Info de página */}
+      {filteredCount !== undefined && totalPages !== undefined && (
+        <p className="text-xs text-slate-500 font-body mt-1 sm:mt-0">
+          Página <span className="text-slate-300 font-medium">{currentPage}</span> de{' '}
+          <span className="text-[#d4a843] font-semibold">{totalPages}</span> · mostrando{' '}
+          <span className="text-slate-300 font-medium">{paginatedCount}</span> de{' '}
+          <span className="text-[#d4a843] font-semibold">{filteredCount}</span> países
+        </p>
+      )}
     </div>
   )
 }

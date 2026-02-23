@@ -100,13 +100,26 @@ export default function HomePage() {
 
         {/* Barra de búsqueda */}
         <div className="mb-8">
-          <SearchBar
-            value={search}
-            onChange={handleSearch}
-            totalCount={countries?.length ?? 0}
-            filteredCount={filtered.length}
-          />
+        <SearchBar
+          value={search}
+          onChange={setSearch}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          paginatedCount={paginated.length}
+          filteredCount={filtered.length}
+        />
         </div>
+
+        {/* Info de página */}
+        {!isLoading && !isError && filtered.length > 0 && (
+          <p className="text-xs text-slate-500 font-body mb-4">
+            Página <span className="text-slate-300 font-medium">{currentPage}</span> de{' '}
+            <span className="text-[#d4a843] font-semibold">{totalPages}</span>
+            {' · '}mostrando{' '}
+            <span className="text-slate-300 font-medium">{paginated.length}</span> de{' '}
+            <span className="text-[#d4a843] font-semibold">{filtered.length}</span> países
+          </p>
+        )}
 
         {/* Estado de error */}
         {isError && (
