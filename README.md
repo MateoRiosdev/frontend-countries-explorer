@@ -36,18 +36,42 @@ http://localhost:5173
 
 ---
 
-## 📋 Funcionalidades — Nivel 1 (Básico)
+📋 Funcionalidades — Nivel 1 (Básico)
 
-✔ Lista de **250+ países** consumidos desde REST Countries API
-✔ Fetching con **React Query**
+✔ Lista de 250+ países consumidos desde REST Countries API
+
+✔ Fetching con React Query
+
 ✔ Skeleton loaders mientras cargan los datos
+
 ✔ Búsqueda en tiempo real por nombre
-✔ Filtro por región (África, América, Asia, Europa, Oceanía)
-✔ Orden alfabético A → Z / Z → A
+
+✔ Filtro por región:
+
+* África
+
+* América
+
+* Asia
+
+* Europa
+
+* Oceanía
+
+✔ Orden alfabético:
+
+* A → Z
+
+* Z → A
+
 ✔ Contador dinámico de resultados
+
 ✔ Estado de error con botón de reintentar
+
 ✔ Estado vacío cuando no hay coincidencias
+
 ✔ Diseño responsive (1 → 2 → 3 → 4 columnas)
+
 ✔ Animaciones stagger en las cards
 
 ---
