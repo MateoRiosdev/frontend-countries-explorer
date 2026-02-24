@@ -166,15 +166,3 @@ https://jsonplaceholder.typicode.com/posts
 | `feature/nivel-1-basico`     | ✅ Nivel 1  |
 | `feature/nivel-2-intermedio` | ✅ Nivel 2  |
 | `feature/nivel-3-avanzado`   | 🔜 Nivel 3 |
-
----
-
-## 🎯 Próximo Nivel – Avanzado
-
-En el Nivel 3 se implementará:
-
-* 🌙 Dark Mode persistente
-* 🔄 Infinite Scroll con Intersection Observer
-* 🧠 Optimización avanzada con memoización
-* 🔎 Query params sincronizados con la URL
-* 🚀 Deploy en Vercel
