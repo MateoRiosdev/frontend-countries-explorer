@@ -183,4 +183,7 @@ Aplicación desplegada en **Vercel**:
 ## 👤 Autor
 
 **Mateo Julio Gomero Rios**  
-GitHub: [@MateoRiosdev](https://github.com/MateoRiosdev)
+
+* 💼 **LinkedIn:** [mateojuliogomerorios](https://www.linkedin.com)
+
+* 🧑‍💻 **GitHub:** [@MateoRiosdev](https://github.com)
