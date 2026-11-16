@@ -1,25 +1,70 @@
-const BASE_URL = 'https://restcountries.com/v3.1'
+
+const BASE_URL = '/countries.json'
+
+let countriesCache = null
+let countriesPromise = null
+
+async function loadCountries() {
+  if (countriesCache) return countriesCache
+
+  if (!countriesPromise) {
+    countriesPromise = fetch(BASE_URL)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Error al obtener países: ${response.status}`)
+        }
+        return response.json()
+      })
+      .then((data) => {
+        if (!Array.isArray(data)) {
+          throw new Error('El archivo countries.json no contiene una lista válida')
+        }
+
+        countriesCache = data
+        return data
+      })
+      .catch((error) => {
+        countriesPromise = null
+        throw error
+      })
+  }
+
+  return countriesPromise
+}
 
 export async function fetchAllCountries() {
-  const fields = 'name,flags,capital,population,region,subregion,languages,cca3'
-  const response = await fetch(`${BASE_URL}/all?fields=${fields}`)
-  if (!response.ok) throw new Error(`Error al obtener países: ${response.status}`)
-  const data = await response.json()
-  return data.sort((a, b) => a.name.common.localeCompare(b.name.common))
+  const data = await loadCountries()
+
+  return [...data].sort((a, b) =>
+    a.name.common.localeCompare(b.name.common)
+  )
 }
 
 export async function fetchCountryByCode(code) {
-  const fields = 'name,flags,capital,population,region,subregion,languages,cca3,currencies,borders,area,timezones,continents,coatOfArms,maps,tld,independent,status,unMember'
-  const response = await fetch(`${BASE_URL}/alpha/${code}?fields=${fields}`)
-  if (!response.ok) throw new Error(`País no encontrado: ${response.status}`)
-  const data = await response.json()
-  return data
+  const data = await loadCountries()
+
+  const country = data.find(
+    (item) =>
+      item.cca3?.toLowerCase() === String(code).toLowerCase()
+  )
+
+  if (!country) {
+    throw new Error(`País no encontrado: ${code}`)
+  }
+
+  return country
 }
 
 export async function fetchCountriesByCodes(codes) {
   if (!codes || codes.length === 0) return []
-  const joined = codes.join(',')
-  const response = await fetch(`${BASE_URL}/alpha?codes=${joined}&fields=name,flags,cca3`)
-  if (!response.ok) return []
-  return response.json()
+
+  const data = await loadCountries()
+
+  const normalizedCodes = new Set(
+    codes.map((code) => String(code).toLowerCase())
+  )
+
+  return data.filter((country) =>
+    normalizedCodes.has(country.cca3?.toLowerCase())
+  )
 }

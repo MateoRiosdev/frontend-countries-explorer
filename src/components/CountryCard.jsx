@@ -1,11 +1,32 @@
 import { Link } from 'react-router-dom'
 
+
 function formatPopulation(pop) {
-  if (pop >= 1_000_000_000) return (pop / 1_000_000_000).toFixed(1) + 'B'
-  if (pop >= 1_000_000) return (pop / 1_000_000).toFixed(1) + 'M'
-  if (pop >= 1_000) return (pop / 1_000).toFixed(0) + 'K'
-  return pop.toString()
+  if (pop === null || pop === undefined || pop === '') {
+    return 'N/D'
+  }
+
+  const population = Number(pop)
+
+  if (!Number.isFinite(population) || population < 0) {
+    return 'N/D'
+  }
+
+  if (population >= 1_000_000_000) {
+    return (population / 1_000_000_000).toFixed(1) + 'B'
+  }
+
+  if (population >= 1_000_000) {
+    return (population / 1_000_000).toFixed(1) + 'M'
+  }
+
+  if (population >= 1_000) {
+    return (population / 1_000).toFixed(0) + 'K'
+  }
+
+  return population.toString()
 }
+
 
 function getLanguages(languages) {
   if (!languages) return 'N/D'

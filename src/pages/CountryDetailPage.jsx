@@ -5,8 +5,17 @@ import ScrollToTopButton from '../components/ScrollToTopButton'
 import Navbar from '../components/Navbar'
 
 function formatNumber(n) {
-  if (!n) return 'N/D'
-  return n.toLocaleString('es-PE')
+  if (n === null || n === undefined || n === '') {
+    return 'N/D'
+  }
+
+  const number = Number(n)
+
+  if (!Number.isFinite(number) || number < 0) {
+    return 'N/D'
+  }
+
+  return number.toLocaleString('es-PE')
 }
 
 function formatArea(area) {
@@ -135,17 +144,30 @@ export default function CountryDetailPage() {
           <InfoBlock title="Idiomas oficiales" icon="🗣️">
             <p className="text-slate-300 font-body text-sm leading-relaxed">{getLanguages(languages)}</p>
           </InfoBlock>
+          
           <InfoBlock title="Zonas horarias" icon="🕐">
-            <div className="flex flex-wrap gap-2">
-              {timezones?.slice(0, 6).map(tz => (
-                <span key={tz} className="text-xs bg-[#0f2044] text-slate-400 px-2.5 py-1 rounded-lg font-body border border-[rgba(212,168,67,0.1)]">
-                  {tz}
-                </span>
-              ))}
-              {timezones?.length > 6 && (
-                <span className="text-xs text-slate-600 font-body self-center">+{timezones.length - 6} más</span>
-              )}
-            </div>
+            {Array.isArray(timezones) && timezones.length > 0 ? (
+              <div className="flex flex-wrap gap-2">
+                {timezones.slice(0, 6).map((tz) => (
+                  <span
+                    key={tz}
+                    className="text-xs bg-[#0f2044] text-slate-300 px-2.5 py-1.5 rounded-lg font-body border border-[rgba(212,168,67,0.2)] break-all"
+                  >
+                    {tz}
+                  </span>
+                ))}
+
+                {timezones.length > 6 && (
+                  <span className="text-xs text-slate-500 font-body self-center">
+                    +{timezones.length - 6} más
+                  </span>
+                )}
+              </div>
+            ) : (
+              <p className="text-slate-500 font-body text-sm">
+                No hay información de zonas horarias disponible.
+              </p>
+            )}
           </InfoBlock>
         </div>
 
@@ -182,10 +204,18 @@ export default function CountryDetailPage() {
       </main>
 
       <footer className="border-t border-[rgba(212,168,67,0.1)] py-6 mt-10">
-        <p className="text-center text-slate-600 font-body text-sm">
-          Datos obtenidos de <a href="https://restcountries.com" target="_blank" rel="noopener noreferrer" className="text-[#d4a843]/70 hover:text-[#d4a843] transition-colors">REST Countries API</a>
-          {' '}· Explorador de Países — Nivel 3
-        </p>
+        
+      <p className="text-center text-slate-600 font-body text-sm px-4">
+        Datos geográficos: world-countries
+        {' · '}
+        Población: Banco Mundial
+        {' · '}
+        Zonas horarias: IANA
+      </p>
+      <p className="text-center text-[#d4a843]/70 font-body text-xs mt-2">
+        Explorador de Países — Nivel 3
+      </p>
+
         <p className="text-center text-slate-500 font-body text-xs mt-1">
           © {new Date().getFullYear()} Mateo Julio Gomero Rios (
           <a href="https://github.com/MateoRiosdev" target="_blank" rel="noopener noreferrer" className="text-[#C49102] hover:underline transition-all">
